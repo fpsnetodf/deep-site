@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Campanha Institucional{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+        <div class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-10">
+        </div>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a href="{% url 'core:dashboard' %}" class="hover:underline">Dashboard</a></li>
+                <li><a href="{% url 'core:sobre' %}" class="hover:underline">Quem Somos</a></li>
+                <li><a href="{% url 'core:contato' %}" class="hover:underline">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="p-6">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-gray-800 text-white text-center p-4">
+        <p>&copy; 2025 Campanha. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>

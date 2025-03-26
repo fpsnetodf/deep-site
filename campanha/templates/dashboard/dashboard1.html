@@ -1,0 +1,92 @@
+{% extends "base1.html" %}
+{% load static %}
+
+{% block title %}Dashboard da Campanha{% endblock %}
+
+{% block content %}
+<div class="flex flex-col lg:flex-row min-h-screen">
+    <!-- Aside (Menu lateral e informações extras) -->
+    <aside class="bg-blue-600 text-white w-full lg:w-1/4 p-6 flex flex-col">
+        <h2 class="text-2xl font-bold mb-4">Campanha</h2>
+        <nav class="space-y-2">
+            <a href="{% url 'agenda:list' %}" class="block px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded">Agendas</a>
+            <a href="{% url 'logistica:lista' %}" class="block px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded">Logística</a>
+            <a href="{% url 'marketing:lista' %}" class="block px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded">Marketing</a>
+            <a href="{% url 'eleitores:index' %}" class="block px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded">Eleitores</a>
+            <a href="{% url 'lideranca:list' %}" class="block px-4 py-2 bg-blue-800 hover:bg-blue-700 rounded">Lideranças</a>
+        </nav>
+        <div class="mt-6">
+            <h3 class="text-xl font-semibold">Notícias Recentes</h3>
+            <ul class="space-y-2 mt-2">
+                {% for noticia in noticias %}
+                    <li>
+                        <a href="{{ noticia.url }}" class="hover:underline">{{ noticia.titulo }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-1 bg-gray-50 p-6 space-y-6">
+        <h1 class="text-3xl font-bold mb-4">Bem-vindo(a) ao painel da campanha!</h1>
+        <p class="text-gray-700">
+            Utilize o menu lateral para acessar as principais funcionalidades do sistema. Aqui você encontrará ferramentas para
+            gerenciar sua campanha de forma eficiente.
+        </p>
+
+        <!-- Widget: Gráfico Interativo -->
+        <div class="container mx-auto">
+            <canvas id="myChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Widget: Lideranças Cadastradas -->
+        <div class="bg-white shadow-md p-4 rounded">
+            <h2 class="text-xl font-bold mb-4">Lideranças Cadastradas</h2>
+            {% if liderancas %}
+                <ul class="list-disc pl-5">
+                    {% for lider in liderancas %}
+                        <li>{{ lider.nome }} - {{ lider.email }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Nenhuma liderança registrada.</p>
+            {% endif %}
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Janeiro', 'Fevereiro', 'Março'],
+            datasets: [{
+                label: '# de Agendas',
+                data: [12, 19, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock script %}

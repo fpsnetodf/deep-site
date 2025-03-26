@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Detalhes da Liderança{% endblock %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">{{ lideranca.nome }}</h1>
+    <p><strong>Email:</strong> {{ lideranca.email }}</p>
+    <p><strong>Metas:</strong> {{ lideranca.metas }}</p>
+    <p><strong>Campanha:</strong> {{ lideranca.campanha.nome }}</p>
+    <a href="{% url 'lideranca:list' %}" class="mt-4 inline-block text-blue-600 hover:underline">Voltar à lista</a>
+</div>
+{% endblock %}

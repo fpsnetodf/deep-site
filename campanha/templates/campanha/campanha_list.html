@@ -1,0 +1,37 @@
+{% extends 'base1.html' %}
+{% block title %}Campanhas{% endblock %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Campanhas</h1>
+    <a href="{% url 'campanha:campanha_create' %}" class="bg-green-600 text-white px-4 py-2 rounded">Nova Campanha</a>
+    <table class="min-w-full mt-4 bg-white">
+        <thead>
+            <tr>
+                <th class="py-2 px-4 border-b">Nome</th>
+                <th class="py-2 px-4 border-b">Descrição</th>
+                <th class="py-2 px-4 border-b">Data de Início</th>
+                <th class="py-2 px-4 border-b">Data de Fim</th>
+                <th class="py-2 px-4 border-b">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for campanha in campanhas %}
+            <tr class="hover:bg-gray-100">
+                <td class="py-2 px-4 border-b">{{ campanha.nome }}</td>
+                <td class="py-2 px-4 border-b">{{ campanha.descricao }}</td>
+                <td class="py-2 px-4 border-b">{{ campanha.data_inicio }}</td>
+                <td class="py-2 px-4 border-b">{{ campanha.data_fim }}</td>
+                <td class="py-2 px-4 border-b">
+                    <a href="{% url 'campanha:campanha_detail' campanha.pk %}" class="text-blue-600 hover:underline">Ver</a>
+                    <a href="{% url 'campanha:campanha_edit' campanha.pk %}" class="text-blue-600 hover:underline">Editar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="py-2 px-4 text-center">Nenhuma campanha encontrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

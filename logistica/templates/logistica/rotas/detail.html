@@ -1,0 +1,47 @@
+{% extends 'base1.html' %}
+{% block title %}Detalhes da Rota{% endblock %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">{{ rota.nome }}</h1>
+    <p><strong>Descrição:</strong> {{ rota.descricao }}</p>
+
+    <!-- Div para mapear a rota utilizando Leaflet -->
+    <div id="map" style="height: 400px;"></div>
+
+    <a href="{% url 'logistica:rota_list' %}" class="mt-4 inline-block text-blue-600 hover:underline">Voltar</a>
+</div>
+
+<!-- Inclua o Leaflet CSS e JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa o mapa na div com id "map"
+    var map = L.map('map').setView([0, 0], 2);  // Visão inicial padrão
+
+    // Adiciona camada de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Converte o campo "pontos" (JSON) em um array de coordenadas
+    var pontos = {{ rota.pontos|safe }};
+    if (pontos && pontos.length > 0) {
+        // Ajusta o centro do mapa para o primeiro ponto
+        map.setView([pontos[0].lat, pontos[0].lng], 13);
+
+        // Mapeia os pontos para um array de latlngs
+        var latlngs = pontos.map(function(p) {
+            return [p.lat, p.lng];
+        });
+
+        // Cria e adiciona uma polyline (linha) no mapa
+        var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map);
+
+        // Ajusta a visão para cobrir toda a polyline
+        map.fitBounds(polyline.getBounds());
+    }
+});
+</script>
+{% endblock %}

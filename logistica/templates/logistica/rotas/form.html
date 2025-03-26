@@ -1,0 +1,73 @@
+{% extends 'base1.html' %}
+{% block title %}{{ action }} Rota{% endblock %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">{{ action }} Rota</h1>
+    <form method="post" class="bg-white p-6 shadow-md rounded">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <!-- Mapa interativo para seleção de pontos -->
+        <div id="map" style="height: 400px; margin-bottom: 20px;"></div>
+
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">{{ action }}</button>
+        <a href="{% url 'logistica:rota_list' %}" class="ml-4 text-blue-600 hover:underline">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- Inclua os arquivos do Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Array onde serão salvos os pontos da rota
+    var pontosArray = [];
+    
+    // Inicializa o mapa com um centro padrão
+    var map = L.map('map').setView([0, 0], 13);
+    
+    // Adiciona a camada do OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // Tenta obter a localização do navegador para centralizar o mapa
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            // Centraliza o mapa na localização atual
+            map.setView([lat, lng], 13);
+            // Adiciona um marcador de localização (opcional)
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup("Localização atual")
+                .openPopup();
+        }, function(error) {
+            console.error("Erro na geolocalização: " + error.message);
+        });
+    } else {
+        console.error("Geolocalização não é suportada neste navegador.");
+    }
+    
+    // Quando o usuário clicar no mapa, adiciona um marcador e salva a coordenada
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        
+        // Adiciona um marcador no local clicado
+        L.marker([lat, lng]).addTo(map);
+        
+        // Adiciona a coordenada ao array de pontos
+        pontosArray.push({lat: lat, lng: lng});
+        
+        // Atualiza o campo 'pontos' com o JSON dos pontos no array
+        var pontosField = document.getElementById('id_pontos');  // id gerado automaticamente pelo Django para o campo
+        pontosField.value = JSON.stringify(pontosArray);
+    });
+});
+</script>
+{% endblock %}
+

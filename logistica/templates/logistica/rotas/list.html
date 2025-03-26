@@ -1,0 +1,32 @@
+{% extends 'base1.html' %}
+{% block title %}Rotas{% endblock %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Rotas Cadastradas</h1>
+    <a href="{% url 'logistica:rota_create' %}" class="bg-green-600 text-white px-4 py-2 rounded">Cadastrar Nova Rota</a>
+    <table class="min-w-full mt-4 bg-white">
+        <thead>
+            <tr>
+                <th class="py-2 px-4 border-b">Nome</th>
+                <th class="py-2 px-4 border-b">Descrição</th>
+                <th class="py-2 px-4 border-b">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rota in rotas %}
+            <tr class="hover:bg-gray-100">
+                <td class="py-2 px-4 border-b">{{ rota.nome }}</td>
+                <td class="py-2 px-4 border-b">{{ rota.descricao }}</td>
+                <td class="py-2 px-4 border-b">
+                    <a href="{% url 'logistica:rota_detail' rota.pk %}" class="text-blue-600 hover:underline">Ver Detalhes</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center p-4">Nenhuma rota cadastrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

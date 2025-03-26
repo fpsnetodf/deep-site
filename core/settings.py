@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'eleitores',
     'logistica',
     'marketing',
+    'lideranca',
     'channels'
 ]
 
@@ -134,3 +135,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'  # Defina o caminho correto para sua página de login
 
+# envio de email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Exemplo com Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'seu_email@gmail.com'
+EMAIL_HOST_PASSWORD = 'sua_password'

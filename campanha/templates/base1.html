@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Campanha Institucional{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilo para footer fixo ao final */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        /* A área de conteúdo vai ocupar o espaço disponível */
+        .container-main {
+            flex: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <!-- Cabeçalho -->
+    <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+        <div class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-10">
+        </div>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a href="{% url 'campanha:dashboard' %}" class="hover:underline">Dashboard</a></li>
+                <li><a href="{% url 'campanha:sobre' %}" class="hover:underline">Quem Somos</a></li>
+                <li><a href="{% url 'campanha:contato' %}" class="hover:underline">Contato</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'campanha:logout' %}" class="hover:underline">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'campanha:login' %}" class="hover:underline">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div class="container-main p-6">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer: Sempre no final da página -->
+    <footer class="bg-gray-800 text-white text-center p-4">
+        <p>&copy; 2025 Campanha. Todos os direitos reservados.</p>
+    </footer>
+    {% block script %}{% endblock script %}
+</body>
+</html>

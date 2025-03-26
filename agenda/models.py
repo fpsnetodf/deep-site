@@ -1,48 +1,22 @@
 # agenda/models.py
 from django.db import models
-from django.conf import settings
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-# STATUS_CHOICES = (
-#     ('free', 'Livre'),
-#     ('pending', 'Pendente'),
-#     ('confirmed', 'Confirmada'),
-#     ('conflict', 'Conflito'),
-# )
-
-# class Agenda(models.Model):
-#     title       = models.CharField(max_length=255)
-#     description = models.TextField(blank=True)
-#     date        = models.DateTimeField()
-#     status      = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-#     created_by  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='agendas')
-#     created_at  = models.DateTimeField(auto_now_add=True)
-#     updated_at  = models.DateTimeField(auto_now=True)
-
-#     def __str__(self):
-#         return f"{self.title} - {self.date.strftime('%d/%m/%Y %H:%M')}"
-
-# agenda/models.py
-# from django.db import models
-# from django.conf import settings
-
-STATUS_CHOICES = (
-    ('free', 'Livre'),
-    ('pending', 'Pendente'),
-    ('confirmed', 'Confirmada'),
-    ('conflict', 'Conflito'),
-)
+from campanha.models import Coordenador  # se houver relacionamento, ou remova se não necessário
 
 class Agenda(models.Model):
-    title       = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    date        = models.DateTimeField()
-    status      = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    created_by  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='agendas')
-    created_at  = models.DateTimeField(auto_now_add=True)
-    updated_at  = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=255)
+    date = models.DateField()
+    description = models.TextField(blank=True, null=True)
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ('pendente', 'Pendente'),
+            ('confirmada', 'Confirmada'),
+            ('conflitante', 'Conflitante')
+        ]
+    )
+    # Se quiser incluir um campo de relacionamento com Coordinador, descomente:
+    coordenador = models.ForeignKey(Coordenador, on_delete=models.CASCADE, related_name="agendas")
 
     def __str__(self):
-        return f"{self.title} - {self.date.strftime('%d/%m/%Y %H:%M')}"
+        return f"{self.title} - {self.date}"
+

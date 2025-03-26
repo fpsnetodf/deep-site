@@ -38,3 +38,6 @@ def create_rota(request):
 def rota_detail(request, pk):
     rota = get_object_or_404(Rota, pk=pk)
     return render(request, 'logistica/rotas/detail.html', {'rota': rota})
+
+
+

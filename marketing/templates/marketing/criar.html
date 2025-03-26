@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Adicionar Conteúdo Audiovisual{% endblock %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6">Adicionar Novo Conteúdo Audiovisual</h1>
+    <form method="post" class="bg-white p-6 shadow-md rounded">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="titulo" class="block text-gray-700 font-medium mb-2">Título</label>
+            {{ form.titulo }}
+        </div>
+        <div class="mb-4">
+            <label for="descricao" class="block text-gray-700 font-medium mb-2">Descrição</label>
+            {{ form.descricao }}
+        </div>
+        <div class="mb-4">
+            <label for="data_publicacao" class="block text-gray-700 font-medium mb-2">Data de Publicação</label>
+            {{ form.data_publicacao }}
+        </div>
+        <div class="mb-4">
+            <label for="tipo" class="block text-gray-700 font-medium mb-2">Tipo</label>
+            {{ form.tipo }}
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Salvar</button>
+        <a href="{% url 'marketing:lista' %}" class="ml-4 text-blue-600 hover:underline">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

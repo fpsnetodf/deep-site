@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Detalhe do Eleitor{% endblock %}
+{% block content %}
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">{{ eleitor.nome }}</h1>
+  <p>Email: {{ eleitor.email }}</p>
+  <p>Telefone: {{ eleitor.telefone }}</p>
+  <a href="{% url 'eleitores:enviar_mensagem' eleitor.id %}" class="bg-blue-600 text-white px-4 py-2 rounded mt-4 inline-block">Enviar Mensagem</a>
+  
+  <h2 class="text-xl mt-8">Mensagens Enviadas</h2>
+  <ul>
+    {% for mensagem in mensagens %}
+      <li class="border-b py-2">{{ mensagem.enviado_em|date:"d/m/Y H:i" }}: {{ mensagem.mensagem }}</li>
+    {% empty %}
+      <li>Nenhuma mensagem enviada.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+1. Notificações em Tempo Real
+Para criar notificações em tempo real no sistema, podemos usar Django Channels e WebSockets. Isso permitirá que os usuários recebam atualizações sem precisar recarregar a página, como alertas de novos agendamentos ou mudanças no status das agendas.
+
+Instalação de Django Channels
+Instale o pacote necessário:
+
+bash
+pip install channels
+Adicione channels ao arquivo settings.py:
+
+python
+INSTALLED_APPS += ['channels']
+Configure o backend de WebSocket em settings.py:
+
+python
+ASGI_APPLICATION = 'campanha_site.asgi.application'
+Criar o Arquivo asgi.py

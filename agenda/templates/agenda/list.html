@@ -1,0 +1,56 @@
+<!-- agenda/templates/agenda/list.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Agendas{% endblock %}
+
+{% block content %}
+<div class="container mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Agendas da Campanha</h1>
+    <table class="min-w-full bg-white">
+        <thead>
+            <tr>
+                <th class="py-2 px-4 border-b">Título</th>
+                <th class="py-2 px-4 border-b">Data</th>
+                <th class="py-2 px-4 border-b">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for agenda in agendas %}
+            <tr class="hover:bg-gray-100">
+                <td class="py-2 px-4 border-b">{{ agenda.title }}</td>
+                <td class="py-2 px-4 border-b">{{ agenda.date|date:"d/m/Y H:i" }}</td>
+                <td class="py-2 px-4 border-b">
+                    {% if agenda.status == 'pending' %}
+                        <span class="text-yellow-600">Pendente</span>
+                    {% elif agenda.status == 'confirmed' %}
+                        <span class="text-green-600">Confirmada</span>
+                    {% elif agenda.status == 'conflict' %}
+                        <span class="text-red-600">Conflito</span>
+                    {% else %}
+                        <span class="text-gray-600">Livre</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3" class="text-center p-4">Nenhuma agenda encontrada.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        const ws = new WebSocket('ws://localhost:8000/ws/agenda/');
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            alert(data.message);
+        };
+    </script>
+{% endblock script %}
